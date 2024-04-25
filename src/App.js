@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import TextController from "./components/TextController";
+import Timer from "./components/Timer";
+import MinesRemaining from "./components/MinesRemaining";
 
-function App() {
+const App = () => {
+
+  const [mines, setMines] = useState(99);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="w-full h-screen bg-white dark:bg-gray-700 p-5">
+      <div className="bg-gray-500 p-3 border-4 border-gray-400">
+        <div className="border-4 border-gray-700 flex justify-between">
+          <TextController>
+            <MinesRemaining
+              mines={mines}
+              className="text-2xl font-bold font-mono select-none text-red-600 m-0"
+            />
+          </TextController>
+          <div className="m-0 text-xl">
+            😉
+          </div>
+          <TextController>
+            <Timer
+              className="text-2xl font-bold font-mono select-none text-red-600 m-0"
+            />
+          </TextController>
+        </div>
+      </div>
+
+      {/*<Grid cols={25} rows={15} />*/}
     </div>
   );
 }
