@@ -1,15 +1,17 @@
-import React from "react";
+import Matrix from "../functions/Matrix";
 import Cell from "./Cell";
 
 const Grid = ({ cols, rows, mines }) => {
+    const matrix = Matrix(cols, rows);
+
     return (
-        <div className="flex">
-            {Array.from({ length: rows }).map((_, rowIndex) => (
-                <React.Fragment key={rowIndex}>
-                    {Array.from({ length: cols }).map((_, colIndex) => (
-                        <Cell key={`${rowIndex}-${colIndex}`} />
+        <div>
+            {matrix.map(row => (
+                <div className="flex">
+                    {row.map(col => (
+                        <Cell />
                     ))}
-                </React.Fragment>
+                </div>
             ))}
         </div>
     );
