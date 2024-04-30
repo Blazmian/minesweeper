@@ -1,15 +1,12 @@
-import Matrix from "../functions/Matrix";
 import Cell from "./Cell";
 
-const Grid = ({ cols, rows, mines }) => {
-    const matrix = Matrix(cols, rows);
-
+const Grid = ({ matrix = [], firstPressed, setFirstPressed, regenerateGrid, setMinesRemaining }) => {
     return (
         <div>
-            {matrix.map(row => (
-                <div className="flex">
-                    {row.map(col => (
-                        <Cell />
+            {matrix && matrix.map((row, rowIndex) => (
+                <div className="flex" key={rowIndex}>
+                    {row.map((cell, colIndex) => (
+                        <Cell key={`${rowIndex}-${colIndex}`} value={cell} {...{ regenerateGrid, firstPressed, setFirstPressed, setMinesRemaining }} />
                     ))}
                 </div>
             ))}
