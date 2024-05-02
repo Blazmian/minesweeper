@@ -1,15 +1,16 @@
 const PlaceMines = (matrix, numMines) => {
     const rows = matrix.length;
     const cols = matrix[0].length;
-    let minesPlaced = 0;
+    for (let i = 0; i < numMines; i++) {
+        let placed = false;
+        while (!placed) {
+            const row = Math.floor(Math.random() * rows);
+            const col = Math.floor(Math.random() * cols);
 
-    while (minesPlaced < numMines) {
-        const randomRow = Math.floor(Math.random() * rows);
-        const randomCol = Math.floor(Math.random() * cols);
-
-        if (matrix[randomRow][randomCol] !== -1) {
-            matrix[randomRow][randomCol] = -1;
-            minesPlaced++;
+            if (!matrix[row][col].mine) {
+                matrix[row][col].mine = true;
+                placed = true;
+            }
         }
     }
 

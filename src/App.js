@@ -7,15 +7,11 @@ import Grid from "./components/Grid";
 
 const App = () => {
 
-  const [mines, setMines] = useState(99);
-  const [minesRemaining, setMinesRemaining] = useState(99);
-  const cols = 25, rows = 15;
-  let matrix = GenerateMinesweeperGrid(rows, cols, mines);
-  const [firstPressed, setFirstPressed] = useState(false);
-
-  const regenerateGrid = () => {
-    matrix = GenerateMinesweeperGrid(rows, cols, mines);
-  }
+  const [mines, setMines] = useState(50);
+  const [minesRemaining, setMinesRemaining] = useState(50);
+  const [cols, setCols] = useState(25);
+  const [rows, setRows] = useState(15);
+  const [grid, setGrid] = useState(GenerateMinesweeperGrid(rows, cols, mines));
 
   return (
     <div className="w-full h-screen bg-white dark:bg-gray-700 p-5">
@@ -37,7 +33,7 @@ const App = () => {
           </TextController>
         </div>
         <div className="flex justify-center">
-          <Grid {...{ matrix, firstPressed, setFirstPressed, regenerateGrid, setMinesRemaining }} />
+          <Grid {...{ grid, setGrid, setMinesRemaining }} />
         </div>
       </div>
     </div>
