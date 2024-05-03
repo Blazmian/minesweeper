@@ -1,6 +1,6 @@
 const Cell = ({ open, flagged, mine, adjacentMines, onClick, onRightClick }) => {
 
-    const cellClass = `h-10 w-10 transition-all duration-150 shadow-inner flex items-center justify-center shadow-gray-800 text-xl cursor-default ${flagged
+    const cellClass = `h-8 w-8 transition-all duration-150 shadow-inner flex items-center justify-center shadow-gray-800  cursor-default ${flagged
         ? "bg-gray-700"
         : open
             ? mine
