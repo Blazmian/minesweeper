@@ -1,13 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 
-const Timer = ({ className = "", style, started, gameOver }) => {
+const Timer = ({ className = "", style, started, gameOver, gameWon }) => {
     const [time, setTime] = useState(0);
     const maxTime = 999;
     const intervalRef = useRef(null);
 
     useEffect(() => {
         if (started) {
-            if (gameOver) return () => clearInterval(intervalRef.current);
+            if (gameOver || gameWon) return () => clearInterval(intervalRef.current);
             if (time < maxTime) intervalRef.current = setInterval(() => {
                 setTime(prevTime => {
                     if (prevTime < maxTime) {

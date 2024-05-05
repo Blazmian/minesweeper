@@ -1,40 +1,20 @@
-const Cell = ({ open, flagged, mine, adjacentMines, onClick, onRightClick }) => {
+const Cell = ({ open, flagged, mine, gameOver, adjacentMines, onClick, onRightClick }) => {
 
     const colorText = (adjacentMines) => {
-        let color = "";
-        switch (adjacentMines) {
-            case 1:
-                color = "text-blue-700";
-                break;
-            case 2:
-                color = "text-green-700";
-                break;
-            case 3:
-                color = "text-red-500";
-                break;
-            case 4:
-                color = "text-indigo-900";
-                break;
-            case 5:
-                color = "text-red-900";
-                break;
-            case 6:
-                color = "text-cyan-500";
-                break;
-            case 7:
-                color = "text-black";
-                break;
-            case 8:
-                color = "text-gray-500";
-                break;
-            default:
-                color = "text-black";
-                break;
-        }
-        return color;
+        const colorMap = {
+            1: "text-blue-700",
+            2: "text-green-700",
+            3: "text-red-500",
+            4: "text-indigo-900",
+            5: "text-red-900",
+            6: "text-cyan-500",
+            7: "text-black",
+            8: "text-gray-500",
+        };
+        return colorMap[adjacentMines] || "text-black";
     };
 
-    const cellClass = `h-8 w-8 font-bold duration-150 shadow-inner flex items-center justify-center shadow-gray-800 cursor-default ${flagged
+    const cellClass = `h-8 w-8 font-bold duration-150 shadow-inner flex items-center justify-center select-none shadow-gray-800 cursor-default ${flagged
         ? "bg-gray-700"
         : open
             ? mine
@@ -56,7 +36,17 @@ const Cell = ({ open, flagged, mine, adjacentMines, onClick, onRightClick }) => 
             onContextMenu={handleRightClick}
         >
             {flagged && '🚩'}
-            {open && (mine ? "💣" : adjacentMines !== 0 ? adjacentMines : " ")}
+            {open
+                ? (mine
+                    ? "💣"
+                    : adjacentMines !== 0
+                        ? adjacentMines
+                        : " ")
+                : gameOver
+                && mine
+                && !flagged
+                && "💣"
+            }
         </div>
     );
 };

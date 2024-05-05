@@ -15,12 +15,14 @@ const App = () => {
   const [grid, setGrid] = useState(GenerateMinesweeperGrid(rows, cols, mines));
   const [gameInitialized, setGameInitialized] = useState(false);
   const [gameOver, setGameOver] = useState(false);
+  const [gameWon, setGameWon] = useState(false);
 
   const difficultyOptions = ["Fácil", "Intermedio", "Experto"]
 
   const handleDifficultyChange = (e) => {
     setGameInitialized(false);
     setGameOver(false);
+    setGameWon(false);
     const selectedDifficulty = e.target.value;
     setDifficulty(selectedDifficulty);
 
@@ -75,11 +77,12 @@ const App = () => {
               className="text-2xl font-bold font-mono select-none text-red-600 m-0"
               started={gameInitialized}
               gameOver={gameOver}
+              gameWon={gameWon}
             />
           </TextController>
         </div>
         <div className="flex justify-center">
-          <Grid {...{ grid, setGrid, setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver }} />
+          <Grid {...{ grid, setGrid, rows, cols, mines, setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver, gameWon, setGameWon }} />
         </div>
       </div>
     </div>

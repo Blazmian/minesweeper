@@ -1,6 +1,7 @@
 import Cell from "./Cell";
+import GenerateMinesweeperGrid from "../functions/GenerateMinesweeperGrid";
 
-const Grid = ({ grid, setGrid, setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver }) => {
+const Grid = ({ grid, setGrid, rows, cols, mines, setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver, gameWon, setGameWon }) => {
 
     const openAdjacentCells = (grid, row, col, visited) => {
         const offsets = [
@@ -30,22 +31,35 @@ const Grid = ({ grid, setGrid, setMinesRemaining, gameInitialized, setGameInitia
     };
 
     const openCell = (row, col) => {
-        if (!gameInitialized) setGameInitialized(true);
-        if (gameOver || grid[row][col].flagged) return;
-        const newGrid = [...grid];
-        newGrid[row][col].open = true;
+        let newGrid = [...grid];
+        let cell = newGrid[row][col];
 
-        if (newGrid[row][col].mine) {
+        if (gameOver || cell.flagged || gameWon) return;
+
+        while (!gameInitialized && cell.mine) {
+            newGrid = GenerateMinesweeperGrid(rows, cols, mines);
+            cell = newGrid[row][col];
+        }
+        if (!gameInitialized) {
+            setGrid(newGrid);
+            setGameInitialized(true);
+        }
+
+        cell.open = true;
+        if (cell.mine) {
             setGameOver(true);
             alert("Boom! Has perdido.");
-        } else if (newGrid[row][col].adjacentMines === 0) {
+        } else if (cell.adjacentMines === 0) {
             const visited = {};
             openAdjacentCells(newGrid, row, col, visited);
         }
         setGrid(newGrid);
+        checkIfWon(newGrid);
     };
 
     const flagCell = (row, col) => {
+        if (gameOver || gameWon) return;
+        setGameInitialized(true);
         const newGrid = [...grid];
         const isFlagged = newGrid[row][col].flagged;
         setMinesRemaining(prevState => {
@@ -54,6 +68,15 @@ const Grid = ({ grid, setGrid, setMinesRemaining, gameInitialized, setGameInitia
         newGrid[row][col].flagged = !isFlagged;
         setGrid(newGrid);
     };
+
+    const checkIfWon = async (grid) => {
+        const totalSafeCells = (rows * cols) - mines;
+        let totalOpen = 0;
+        grid.map(row => totalOpen += row.filter(cell => cell.open).length)
+        if (totalOpen !== totalSafeCells) return;
+        setGameWon(true);
+        alert("¡¡Has ganado!!");
+    }
 
     return (
         <div>
@@ -64,6 +87,7 @@ const Grid = ({ grid, setGrid, setMinesRemaining, gameInitialized, setGameInitia
                             key={`${rowIndex}-${colIndex}`}
                             open={cell.open}
                             mine={cell.mine}
+                            gameOver={gameOver}
                             flagged={cell.flagged}
                             adjacentMines={cell.adjacentMines}
                             onClick={() => openCell(rowIndex, colIndex)}
