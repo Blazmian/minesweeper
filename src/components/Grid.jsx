@@ -38,7 +38,8 @@ const Grid = (props) => {
                 newCol >= 0 &&
                 newCol < grid[0].length &&
                 !visited[`${newRow}-${newCol}`] &&
-                !grid[newRow][newCol].open
+                !grid[newRow][newCol].open &&
+                !grid[newRow][newCol].flagged
             ) {
                 grid[newRow][newCol].open = true;
                 visited[`${newRow}-${newCol}`] = true;

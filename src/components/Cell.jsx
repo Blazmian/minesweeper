@@ -14,14 +14,21 @@ const Cell = ({ open, flagged, mine, gameOver, adjacentMines, onClick, onRightCl
         return colorMap[adjacentMines] || "text-black";
     };
 
-    const cellClass = `h-8 w-8 font-bold duration-150 shadow-inner flex items-center justify-center select-none shadow-gray-800 cursor-default ${flagged
-        ? "bg-gray-700"
-        : open
-            ? mine
-                ? 'bg-red-600'
-                : `bg-gray-400 ${colorText(adjacentMines)}`
-            : 'bg-gray-700 hover:shadow-gray-400 cursor-pointer'
-        }`;
+    const getCellClass = () => {
+        if (flagged) {
+            if (gameOver) return mine ? "bg-gray-700" : "bg-gray-400";
+            return "bg-gray-700";
+        }
+        if (open) {
+            if (mine) return "bg-red-600";
+            return `bg-gray-400 ${colorText(adjacentMines)}`;
+        }
+        if (gameOver && mine) return "bg-gray-400";
+        return "bg-gray-700 hover:shadow-gray-400 cursor-pointer";
+    };
+
+
+    const cellClass = `h-8 w-8 font-bold duration-150 shadow-inner flex items-center justify-center select-none shadow-gray-800 ${getCellClass()}`;
 
     const handleRightClick = (e) => {
         e.preventDefault();
@@ -35,13 +42,13 @@ const Cell = ({ open, flagged, mine, gameOver, adjacentMines, onClick, onRightCl
             onClick={onClick}
             onContextMenu={handleRightClick}
         >
-            {flagged && '🚩'}
+            {flagged && gameOver && !mine ? '❌' : flagged ? '🚩' : ''}
             {open
                 ? (mine
                     ? "💣"
                     : adjacentMines !== 0
                         ? adjacentMines
-                        : " ")
+                        : "")
                 : gameOver
                 && mine
                 && !flagged

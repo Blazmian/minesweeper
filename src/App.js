@@ -5,6 +5,7 @@ import MinesRemaining from "./components/MinesRemaining";
 import GenerateMinesweeperGrid from "./functions/GenerateMinesweeperGrid";
 import Grid from "./components/Grid";
 import MineDetector from "./components/MineDetector";
+import Footer from "./components/Footer";
 
 const App = () => {
 
@@ -67,8 +68,8 @@ const App = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-white dark:bg-gray-700 p-5">
-      <div className="mb-5 flex items-center space-x-4">
+    <div className="w-full h-screen bg-white dark:bg-gray-700">
+      <div className="mb-5 flex items-center space-x-4 pt-5 px-5">
         <p className="text-lg font-semibold text-gray-300 mb-0">Dificultad</p>
         <select
           className="py-3 px-4 pe-9 border-transparent rounded-lg font-semibold text-sm bg-neutral-400 text-neutral-700 focus:ring-neutral-600"
@@ -80,7 +81,7 @@ const App = () => {
           ))}
         </select>
       </div>
-      <div className="bg-gray-500 p-3 border-4 border-gray-400">
+      <div className="bg-gray-500 m-5 p-3 border-4 border-gray-400">
         <div className="border-4 border-gray-700 flex justify-between mb-3">
           <TextController>
             <MinesRemaining
@@ -108,6 +109,7 @@ const App = () => {
           />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }
