@@ -1,7 +1,25 @@
 import Cell from "./Cell";
 import GenerateMinesweeperGrid from "../functions/GenerateMinesweeperGrid";
 
-const Grid = ({ grid, setGrid, rows, cols, mines, setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver, gameWon, setGameWon }) => {
+const Grid = (props) => {
+
+    const {
+        grid,
+        setGrid,
+        rows,
+        cols,
+        mines,
+        setMinesRemaining,
+        gameInitialized,
+        setGameInitialized,
+        gameOver,
+        setGameOver,
+        gameWon,
+        setGameWon,
+        handleMouseUp,
+        handleMouseDown,
+        handleBlur
+    } = props;
 
     const openAdjacentCells = (grid, row, col, visited) => {
         const offsets = [
@@ -72,14 +90,18 @@ const Grid = ({ grid, setGrid, rows, cols, mines, setMinesRemaining, gameInitial
     const checkIfWon = async (grid) => {
         const totalSafeCells = (rows * cols) - mines;
         let totalOpen = 0;
-        grid.map(row => totalOpen += row.filter(cell => cell.open).length)
+        grid.map(row => totalOpen += row.filter(cell => cell.open && !cell.mine).length)
         if (totalOpen !== totalSafeCells) return;
         setGameWon(true);
         alert("¡¡Has ganado!!");
     }
 
     return (
-        <div>
+        <div
+            onMouseDown={handleMouseDown}
+            onMouseUp={handleMouseUp}
+            onBlur={handleBlur}
+        >
             {grid.map((row, rowIndex) => (
                 <div key={rowIndex} className="flex">
                     {row.map((cell, colIndex) => (

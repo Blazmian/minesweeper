@@ -23,7 +23,7 @@ const Timer = ({ className = "", style, started, gameOver, gameWon }) => {
             setTime(0);
         }
         // eslint-disable-next-line
-    }, [started, gameOver]);
+    }, [started, gameOver, gameWon]);
 
     const formattedTime = String(time).padStart(3, '0');
 

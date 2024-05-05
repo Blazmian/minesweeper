@@ -4,6 +4,7 @@ import Timer from "./components/Timer";
 import MinesRemaining from "./components/MinesRemaining";
 import GenerateMinesweeperGrid from "./functions/GenerateMinesweeperGrid";
 import Grid from "./components/Grid";
+import MineDetector from "./components/MineDetector";
 
 const App = () => {
 
@@ -16,23 +17,29 @@ const App = () => {
   const [gameInitialized, setGameInitialized] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
+  const [clicking, setClicking] = useState(false);
 
   const difficultyOptions = ["Fácil", "Intermedio", "Experto"]
 
   const handleDifficultyChange = (e) => {
+    const selectedDifficulty = e.target.value;
+    setDifficulty(selectedDifficulty);
+    generateGrid(selectedDifficulty);
+  };
+
+  const generateGrid = (inputChange) => {
     setGameInitialized(false);
     setGameOver(false);
     setGameWon(false);
-    const selectedDifficulty = e.target.value;
-    setDifficulty(selectedDifficulty);
-
+    let selectedDifficulty = difficulty;
+    if (inputChange) selectedDifficulty = inputChange;
     const settings = getDifficultySettings(selectedDifficulty);
     setRows(settings.rows);
     setCols(settings.cols);
     setMines(settings.mines);
     setGrid(GenerateMinesweeperGrid(settings.rows, settings.cols, settings.mines));
     setMinesRemaining(settings.mines);
-  };
+  }
 
   const getDifficultySettings = (difficulty) => {
     switch (difficulty) {
@@ -45,6 +52,18 @@ const App = () => {
       default:
         return { rows: 8, cols: 8, mines: 10 };
     }
+  };
+
+  const handleMouseDown = () => {
+    setClicking(true);
+  };
+
+  const handleMouseUp = () => {
+    setClicking(false);
+  };
+
+  const handleBlur = () => {
+    setClicking(false);
   };
 
   return (
@@ -69,8 +88,8 @@ const App = () => {
               className="text-2xl font-bold font-mono select-none text-red-600 m-0"
             />
           </TextController>
-          <div className="m-0 text-xl">
-            😉
+          <div className="m-0 text-xl cursor-pointer" onClick={generateGrid}>
+            <MineDetector {...{ gameWon, gameOver, clicking }} />
           </div>
           <TextController>
             <Timer
@@ -82,7 +101,11 @@ const App = () => {
           </TextController>
         </div>
         <div className="flex justify-center">
-          <Grid {...{ grid, setGrid, rows, cols, mines, setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver, gameWon, setGameWon }} />
+          <Grid
+            {...{ grid, setGrid, rows, cols, mines }}
+            {...{ setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver }}
+            {...{ gameWon, setGameWon, handleMouseUp, handleMouseDown, handleBlur }}
+          />
         </div>
       </div>
     </div>
