@@ -32,7 +32,7 @@ const App = () => {
     setGameOver(false);
     setGameWon(false);
     let selectedDifficulty = difficulty;
-    if (inputChange) selectedDifficulty = inputChange;
+    if (difficultyOptions.includes(inputChange)) selectedDifficulty = inputChange;
     const settings = getDifficultySettings(selectedDifficulty);
     setRows(settings.rows);
     setCols(settings.cols);
