@@ -1,7 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-const Timer = ({ className = "", style, started, gameOver, gameWon }) => {
-    const [time, setTime] = useState(0);
+const Timer = ({ time = 0, setTime, className = "", style, started, gameOver, gameWon }) => {
     const maxTime = 999;
     const intervalRef = useRef(null);
 

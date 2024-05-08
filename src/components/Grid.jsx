@@ -3,23 +3,10 @@ import GenerateMinesweeperGrid from "../functions/GenerateMinesweeperGrid";
 
 const Grid = (props) => {
 
-    const {
-        grid,
-        setGrid,
-        rows,
-        cols,
-        mines,
-        setMinesRemaining,
-        gameInitialized,
-        setGameInitialized,
-        gameOver,
-        setGameOver,
-        gameWon,
-        setGameWon,
-        handleMouseUp,
-        handleMouseDown,
-        handleBlur
-    } = props;
+    const { grid, setGrid, rows, cols } = props;
+    const { mines, setMinesRemaining, gameInitialized, setGameInitialized } = props;
+    const { gameOver, setGameOver, gameWon, setGameWon } = props;
+    const { handleMouseUp, handleMouseDown, handleBlur, onOpen } = props;
 
     const openAdjacentCells = (grid, row, col, visited) => {
         const offsets = [
@@ -67,7 +54,8 @@ const Grid = (props) => {
         cell.open = true;
         if (cell.mine) {
             setGameOver(true);
-            alert("Boom! Has perdido.");
+            onOpen();
+            //alert("Boom! Has perdido.");
         } else if (cell.adjacentMines === 0) {
             const visited = {};
             openAdjacentCells(newGrid, row, col, visited);
@@ -94,7 +82,9 @@ const Grid = (props) => {
         grid.map(row => totalOpen += row.filter(cell => cell.open && !cell.mine).length)
         if (totalOpen !== totalSafeCells) return;
         setGameWon(true);
-        alert("¡¡Has ganado!!");
+
+        onOpen("won");
+        //alert("¡¡Has ganado!!");
     }
 
     return (

@@ -6,9 +6,10 @@ import GenerateMinesweeperGrid from "./functions/GenerateMinesweeperGrid";
 import Grid from "./components/Grid";
 import MineDetector from "./components/MineDetector";
 import Footer from "./components/Footer";
+import Modal from "./components/Modal";
 
 const App = () => {
-
+  const [time, setTime] = useState(0);
   const [difficulty, setDifficulty] = useState("Fácil");
   const [mines, setMines] = useState(10);
   const [minesRemaining, setMinesRemaining] = useState(10);
@@ -19,6 +20,10 @@ const App = () => {
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
   const [clicking, setClicking] = useState(false);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const onOpen = () => setIsOpen(true);
+  const onClose = () => setIsOpen(false);
 
   const difficultyOptions = ["Fácil", "Intermedio", "Experto"]
 
@@ -95,6 +100,8 @@ const App = () => {
           <TextController>
             <Timer
               className="text-2xl font-bold font-mono select-none text-red-600 m-0"
+              time={time}
+              setTime={setTime}
               started={gameInitialized}
               gameOver={gameOver}
               gameWon={gameWon}
@@ -105,10 +112,11 @@ const App = () => {
           <Grid
             {...{ grid, setGrid, rows, cols, mines }}
             {...{ setMinesRemaining, gameInitialized, setGameInitialized, gameOver, setGameOver }}
-            {...{ gameWon, setGameWon, handleMouseUp, handleMouseDown, handleBlur }}
+            {...{ gameWon, setGameWon, handleMouseUp, handleMouseDown, handleBlur, onOpen }}
           />
         </div>
       </div>
+      <Modal {...{ isOpen, onClose, gameWon, gameOver, time }} />
       <Footer />
     </div>
   );
